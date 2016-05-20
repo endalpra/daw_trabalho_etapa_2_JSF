@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Sitema com JSF</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:growl/>
+                <p:panelGrid columns="2">
+                    <f:facet name="footer">
+                        <div align="center">
+                            <p:commandButton value="Cancelar"
+                                             action="#{controleAgencia.cancelar()}"
+                                             ajax="false" immediate="true" icon=""/>
+                            <p:commandButton value="Salvar"
+                                             action="#{controleAgencia.salvar()}"
+                                             ajax="false" icon="ui-icon-disk"/>
+                        </div>
+                    </f:facet>
+                    <p:outputLabel value="Id"/>
+                    <p:inputText value="#{controleAgencia.objeto.id}" size="10"
+                                 readonly="true"/>
+                    <p:outputLabel value="Numero" for="txtNumero"/>
+                    <p:inputText id="txtNumero" value="#{controleAgencia.objeto.numero}"
+                                 size="20" maxlength="40"/>
+                    <p:outputLabel value="Endereco" for="txtEndereco"/>
+                    <p:inputText id="txtEndereco" value="#{controleAgencia.objeto.endereco}"
+                                 size="20" maxlength="40"/>
+                    <p:outputLabel value="CEP" for="txtCEP"/>
+                    <p:inputText id="txtCEP" value="#{controleAgencia.objeto.cep}"
+                                 size="20" maxlength="15"/>
+                    <p:outputLabel value="Nome Gerente" for="txtNomeGerente"/>
+                    <p:inputText id="txtNomeGerente" value="#{controleAgencia.objeto.nome_gerente}"
+                                 size="20" maxlength="40"/>
+                </p:panelGrid>
+            </h:form>     
+        </ui:define>
+    </ui:composition>
+
+</html>
+

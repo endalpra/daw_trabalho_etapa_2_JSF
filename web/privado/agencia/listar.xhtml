@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Listagem de Agências</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:messages/>
+                <p:growl/>
+                <p:commandButton value="Novo" action="#{controleAgencia.novo()}"
+                                 ajax="false" icon="ui-icon-plus"/>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controleAgencia.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Número" itemValue="numero"/>
+                            <f:selectItem itemLabel="Endereço" itemValue="endereco"/>
+                            <f:selectItem itemLabel="CEP" itemValue="cep"/>
+                            <f:selectItem itemLabel="Gerente" itemValue="nome_gerente"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleAgencia.dao.filtro}">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleAgencia.dao.listaObjetos}" var="obj"
+                             id="listagem">
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Número">
+                        <p:outputLabel value="#{obj.numero}"/>
+                    </p:column>
+                    <p:column headerText="Endereço">
+                        <p:outputLabel value="#{obj.endereco}"/>
+                    </p:column>
+                    <p:column headerText="CEP">
+                        <p:outputLabel value="#{obj.cep}"/>
+                    </p:column>
+                    <p:column headerText="Nome gerente">
+                        <p:outputLabel value="#{obj.nome_gerente}"/>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton value="Editar" action="#{controleAgencia.editar(obj.id)}"
+                                             ajax="false" icon="ui-icon-pencil"/>
+                            <p:commandButton value="Remover" action="#{controleAgencia.remover(obj.id)}"
+                                             onclick="if (!confirm('Confirmar a remoção do objeto'))
+                                                     return false"
+                                             update="@form" icon="ui-icon-trash"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>                         
+            </h:form>        
+        </ui:define>
+    </ui:composition>    
+
+</html>
+
