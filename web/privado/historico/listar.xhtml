@@ -6,70 +6,75 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Listagem de Agências</ui:define>
+        <ui:define name="titulo">Listagem de Historicos</ui:define>
         <ui:define name="conteudo">
             <h:form>
                 <p:messages/>
                 <p:growl/>
-                <p:commandButton value="Novo" action="#{controleAgencia.novo()}"
+                <p:commandButton value="Novo" action="#{controleHistorico.novo()}"
                                  ajax="false" icon="ui-icon-plus"/>
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
-                        <p:selectOneMenu value="#{controleAgencia.dao.ordem}">
+                        <p:selectOneMenu value="#{controleHistorico.dao.ordem}">
                             <f:selectItem itemLabel="ID" itemValue="id"/>
-                            <f:selectItem itemLabel="Número" itemValue="numero"/>
-                            <f:selectItem itemLabel="Endereço" itemValue="endereco"/>
-                            <f:selectItem itemLabel="CEP" itemValue="cep"/>
-                            <f:selectItem itemLabel="Gerente" itemValue="nome_gerente"/>
+                            <f:selectItem itemLabel="Tipo operação" itemValue="tipo_operacao"/>
+                            <f:selectItem itemLabel="Data" itemValue="data"/>
+                            <f:selectItem itemLabel="Número conta" itemValue="num_conta"/>
+                            <f:selectItem itemLabel="Cliente" itemValue="cliente.nome"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro: "/>
-                        <p:inputText value="#{controleAgencia.dao.filtro}">
+                        <p:inputText value="#{controleHistorico.dao.filtro}">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
                         <p:commandButton value="Filtrar" update="listagem"/>
                         <p:outputLabel value="Máximo de objetos"/>
-                        <p:inputText value="#{controleAgencia.dao.maximoObjetos}" size="5">
+                        <p:inputText value="#{controleHistorico.dao.maximoObjetos}" size="5">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton actionListener="#{controleAgencia.dao.primeiro()}"
+                        <p:commandButton actionListener="#{controleHistorico.dao.primeiro()}"
                                          update="listagem" icon="ui-icon-seek-first"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.anterior()}"
+                        <p:commandButton actionListener="#{controleHistorico.dao.anterior()}"
                                          update="listagem" icon="ui-icon-seek-prev"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.proximo()}"
+                        <p:commandButton actionListener="#{controleHistorico.dao.proximo()}"
                                          update="listagem" icon="ui-icon-seek-next"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.ultimo()}"
-                                         update="listagem" icon="ui-icon-seek-end"/>
+                        <p:commandButton actionListener="#{controleHistorico.dao.ultimo()}"
+                                         update="listagem" icon=" ui-icon-seek-end"/>
                     </p:panelGrid>
                 </div>
-                <p:dataTable value="#{controleAgencia.dao.listaObjetos}" var="obj"
+                <p:dataTable value="#{controleHistorico.dao.listaObjetos}" var="obj"
                              id="listagem">
                     <f:facet name="footer">
                         <div align="center">
-                            <p:outputLabel value="#{controleAgencia.dao.mensagemNavegacao}"/>
+                            <p:outputLabel value="#{controleHistorico.dao.mensagemNavegacao}"/>
                         </div>
                     </f:facet>
                     <p:column headerText="ID">
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
-                    <p:column headerText="Número">
-                        <p:outputLabel value="#{obj.numero}"/>
+                    <p:column headerText="Tipo Operação">
+                        <p:outputLabel value="#{obj.tipo_operacao}"/>
                     </p:column>
-                    <p:column headerText="Endereço">
-                        <p:outputLabel value="#{obj.endereco}"/>
+                    <p:column headerText="Data">
+                        <p:outputLabel value="#{obj.data}">
+                        <f:converter converterId="converterCalendar"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column headerText="CEP">
-                        <p:outputLabel value="#{obj.cep}"/>
+                    <p:column headerText="Número Conta">
+                        <p:outputLabel value="#{obj.num_conta}"/>
                     </p:column>
-                    <p:column headerText="Nome gerente">
-                        <p:outputLabel value="#{obj.nome_gerente}"/>
+                    <p:column headerText="Valor">
+                        <p:outputLabel value="#{obj.valor}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <p:outputLabel value="#{obj.cliente.nome}"/>
                     </p:column>
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controleAgencia.editar(obj.id)}"
+                            <p:commandButton action="#{controleHistorico.editar(obj.id)}"
                                              ajax="false" icon="ui-icon-pencil"/>
-                            <p:commandButton action="#{controleAgencia.remover(obj.id)}"
+                            <p:commandButton action="#{controleHistorico.remover(obj.id)}"
                                              onclick="if (!confirm('Confirmar a remoção do objeto'))
                                                      return false"
                                              update="@form" icon="ui-icon-trash"/>

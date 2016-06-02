@@ -23,7 +23,10 @@ public class DAOGenerico<T> implements Serializable {
     private EntityManager em;
     private String ordem = "id";
     private String filtro = "";
-
+    private Integer maximoObjetos = 5;
+    private Integer posicaoAtual = 0;
+    private Integer totalObjetos = 0;
+    
     public DAOGenerico() {
         //inicia a EntityManager
         em = EntityManagerUtil.getEntityManager();
@@ -31,14 +34,9 @@ public class DAOGenerico<T> implements Serializable {
 
     public List<T> getListaObjetos() {
         String jpql = "from " + classePersistente.getSimpleName();
-        String where = "";      
-
-        if (filtro.length() > 0) {
-            //Retirar caracteres especiais do filtro
-            String[] carEspeciais = {"\"","'","+","-","=","_","§","ª","^","~","¨", "@", "#", "$", "%","*", "&", "(", ")", "\\", "|", "/", "?", ",", ".", ":", ";", "!","-","--","{","}","°","<",">","[","]"};
-            for (String s : carEspeciais) {
-                filtro = filtro.replace(s, "");
-            }
+        String where = "";
+        filtro = protegeFiltro(filtro);
+        if (filtro.length() > 0) {           
             if (ordem.equals("id")) {
                 try {
                     Integer.parseInt(filtro);
@@ -51,9 +49,75 @@ public class DAOGenerico<T> implements Serializable {
         }
         jpql += where;
         jpql += " order by " + ordem;
-        return em.createQuery(jpql).getResultList();
+        //Obtendo o totl de registros no banco
+        totalObjetos = em.createQuery("select id from "+classePersistente.getSimpleName()+
+                where + " order by "+ordem).getResultList().size();
+         return em.createQuery(jpql).setFirstResult(posicaoAtual).setMaxResults(maximoObjetos).getResultList();
+      }
+
+    public String protegeFiltro(String filtro){
+        filtro = filtro.replaceAll("[';-]", "");
+        return filtro;
     }
 
+    public void primeiro(){
+        posicaoAtual = 0;
+    }
+    
+    public void anterior(){
+        posicaoAtual -= maximoObjetos;
+        if(posicaoAtual < 0){
+            posicaoAtual = 0;
+        }        
+    }
+    
+    public void proximo(){
+        if(posicaoAtual + maximoObjetos < totalObjetos){
+            posicaoAtual += maximoObjetos;
+        }
+    }
+
+    public void ultimo(){
+        int resto = totalObjetos % maximoObjetos;
+        if(resto > 0){
+            posicaoAtual = totalObjetos - resto;
+        }else{
+            posicaoAtual = totalObjetos - maximoObjetos;
+        }
+    }
+    
+    public String getMensagemNavegacao(){
+        int ate = posicaoAtual + maximoObjetos;
+        if(ate > totalObjetos){
+            ate = totalObjetos;
+        }
+        return "Listando de " + (posicaoAtual + 1)+ " até " +ate+ " de "+ totalObjetos +" registros!";
+    }
+    
+    public Integer getMaximoObjetos() {
+        return maximoObjetos;
+    }
+
+    public void setMaximoObjetos(Integer maximoObjetos) {
+        this.maximoObjetos = maximoObjetos;
+    }
+
+    public Integer getPosicaoAtual() {
+        return posicaoAtual;
+    }
+
+    public void setPosicaoAtual(Integer posicaoAtual) {
+        this.posicaoAtual = posicaoAtual;
+    }
+
+    public Integer getTotalObjetos() {
+        return totalObjetos;
+    }
+
+    public void setTotalObjetos(Integer totalObjetos) {
+        this.totalObjetos = totalObjetos;
+    }
+         
     public void setListaObjetos(List<T> listaObjetos) {
         this.listaObjetos = listaObjetos;
     }

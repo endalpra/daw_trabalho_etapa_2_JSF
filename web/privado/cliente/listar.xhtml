@@ -6,70 +6,70 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Listagem de Agências</ui:define>
+        <ui:define name="titulo">Listagem de Clientes</ui:define>
         <ui:define name="conteudo">
             <h:form>
                 <p:messages/>
                 <p:growl/>
-                <p:commandButton value="Novo" action="#{controleAgencia.novo()}"
+                <p:commandButton value="Novo" action="#{controleCliente.novo()}"
                                  ajax="false" icon="ui-icon-plus"/>
                 <div align="center">
                     <p:panelGrid columns="11">
                         <p:outputLabel value="Ordem: "/>
-                        <p:selectOneMenu value="#{controleAgencia.dao.ordem}">
+                        <p:selectOneMenu value="#{controleCliente.dao.ordem}">
                             <f:selectItem itemLabel="ID" itemValue="id"/>
-                            <f:selectItem itemLabel="Número" itemValue="numero"/>
-                            <f:selectItem itemLabel="Endereço" itemValue="endereco"/>
-                            <f:selectItem itemLabel="CEP" itemValue="cep"/>
-                            <f:selectItem itemLabel="Gerente" itemValue="nome_gerente"/>
+                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                            <f:selectItem itemLabel="Email" itemValue="email"/>
+                            <f:selectItem itemLabel="Endereco" itemValue="endereco"/>
+                            <f:selectItem itemLabel="Cep" itemValue="cep"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro: "/>
-                        <p:inputText value="#{controleAgencia.dao.filtro}">
+                        <p:inputText value="#{controleCliente.dao.filtro}">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
                         <p:commandButton value="Filtrar" update="listagem"/>
                         <p:outputLabel value="Máximo de objetos"/>
-                        <p:inputText value="#{controleAgencia.dao.maximoObjetos}" size="5">
+                        <p:inputText value="#{controleCliente.dao.maximoObjetos}" size="5">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton actionListener="#{controleAgencia.dao.primeiro()}"
+                        <p:commandButton actionListener="#{controleCliente.dao.primeiro()}"
                                          update="listagem" icon="ui-icon-seek-first"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.anterior()}"
+                        <p:commandButton actionListener="#{controleCliente.dao.anterior()}"
                                          update="listagem" icon="ui-icon-seek-prev"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.proximo()}"
+                        <p:commandButton actionListener="#{controleCliente.dao.proximo()}"
                                          update="listagem" icon="ui-icon-seek-next"/>
-                        <p:commandButton actionListener="#{controleAgencia.dao.ultimo()}"
+                        <p:commandButton actionListener="#{controleCliente.dao.ultimo()}"
                                          update="listagem" icon="ui-icon-seek-end"/>
                     </p:panelGrid>
                 </div>
-                <p:dataTable value="#{controleAgencia.dao.listaObjetos}" var="obj"
+                <p:dataTable value="#{controleCliente.dao.listaObjetos}" var="obj"
                              id="listagem">
                     <f:facet name="footer">
                         <div align="center">
-                            <p:outputLabel value="#{controleAgencia.dao.mensagemNavegacao}"/>
+                            <p:outputLabel value="#{controleCliente.dao.mensagemNavegacao}"/>
                         </div>
                     </f:facet>
                     <p:column headerText="ID">
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
-                    <p:column headerText="Número">
-                        <p:outputLabel value="#{obj.numero}"/>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.nome}"/>
                     </p:column>
-                    <p:column headerText="Endereço">
-                        <p:outputLabel value="#{obj.endereco}"/>
+                    <p:column headerText="Email">
+                        <p:outputLabel value="#{obj.email}"/>
                     </p:column>
                     <p:column headerText="CEP">
                         <p:outputLabel value="#{obj.cep}"/>
                     </p:column>
-                    <p:column headerText="Nome gerente">
-                        <p:outputLabel value="#{obj.nome_gerente}"/>
+                    <p:column headerText="Endereço">
+                        <p:outputLabel value="#{obj.endereco}"/>
                     </p:column>
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controleAgencia.editar(obj.id)}"
+                            <p:commandButton action="#{controleCliente.editar(obj.id)}"
                                              ajax="false" icon="ui-icon-pencil"/>
-                            <p:commandButton action="#{controleAgencia.remover(obj.id)}"
+                            <p:commandButton action="#{controleCliente.remover(obj.id)}"
                                              onclick="if (!confirm('Confirmar a remoção do objeto'))
                                                      return false"
                                              update="@form" icon="ui-icon-trash"/>

@@ -22,7 +22,10 @@
                         <p:submenu label="Cadastros">
                             <p:menuitem action="#{controleAgencia.listar()}"
                                         value="Manutenção de Agências" ajax="false"/>
-                            
+                            <p:menuitem action="#{controleCliente.listar()}"
+                                        value="Manutenção de Clientes" ajax="false"/>
+                            <p:menuitem action="#{controleHistorico.listar()}"
+                                        value="Manutenção de Históricos" ajax="false"/>
                         </p:submenu>
                     </p:menu>
                 </h:form>           

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Sitema com JSF</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:growl/>
+                <p:panelGrid columns="2">
+                    <f:facet name="footer">
+                        <div align="center">
+                            <p:commandButton value="Cancelar"
+                                             action="#{controleCliente.cancelar()}"
+                                             ajax="false" immediate="true" icon=""/>
+                            <p:commandButton value="Salvar"
+                                             action="#{controleCliente.salvar()}"
+                                             ajax="false" icon="ui-icon-disk"/>
+                        </div>
+                    </f:facet>
+                    <p:outputLabel value="Id"/>
+                    <p:inputText value="#{controleCliente.objeto.id}" size="10"
+                                 readonly="true"/>
+                    <p:outputLabel value="Nome" for="txtNome"/>
+                    <p:inputText id="txtNome" value="#{controleCliente.objeto.nome}"
+                                 size="20" maxlength="40"/>
+                    <p:outputLabel value="Email" for="txtEmail"/>
+                    <p:inputText id="txtEmail" value="#{controleCliente.objeto.email}"
+                                 size="20" maxlength="40"/>
+                    <p:outputLabel value="Endereco" for="txtNomeEndereco"/>
+                    <p:inputText id="txtNomeEndereco" value="#{controleCliente.objeto.endereco}"
+                                 size="20" maxlength="40"/>
+                    <p:outputLabel value="CEP" for="txtCEP"/>
+                    <p:inputText id="txtCEP" value="#{controleCliente.objeto.cep}"
+                                 size="20" maxlength="15"/>
+                    
+                </p:panelGrid>
+            </h:form>     
+        </ui:define>
+    </ui:composition>
+
+</html>
+

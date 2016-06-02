@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Sitema com JSF</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:growl/>
+                <p:panelGrid columns="2">
+                    <f:facet name="footer">
+                        <div align="center">
+                            <p:commandButton value="Cancelar"
+                                             action="#{controleHistorico.cancelar()}"
+                                             ajax="false" immediate="true" icon=""/>
+                            <p:commandButton value="Salvar"
+                                             action="#{controleHistorico.salvar()}"
+                                             ajax="false" icon="ui-icon-disk"/>
+                        </div>
+                    </f:facet>
+                    <p:outputLabel value="Id"/>
+                    <p:inputText value="#{controleHistorico.objeto.id}" size="10"
+                                 readonly="true"/>
+                    <p:outputLabel value="Tipo Operação" for="txtTipoOperacao"/>
+                    <p:inputText id="txtTipoOperacao" value="#{controleHistorico.objeto.tipo_operacao}"
+                                 size="40" maxlength="40"/>
+                    
+                    <p:outputLabel value="Data" for="txtData"/>
+                    <p:inputText id="txtData" value="#{controleHistorico.objeto.data}"
+                                 size="40" maxlength="40">
+                    <f:converter converterId="converterCalendar"/>  
+                    </p:inputText>
+                    
+                    <p:outputLabel value="Número Conta" for="txtNum_conta"/>
+                    <p:inputText id="txtNum_conta" value="#{controleHistorico.objeto.num_conta}"
+                                 size="40" maxlength="40"/>
+                    <p:outputLabel value="Valor" for="txtValor"/>
+                    <p:inputText id="txtValor" value="#{controleHistorico.objeto.valor}"
+                                 size="40" maxlength="40"/>
+                    <p:outputLabel value="Cliente" for="selectCliente"/>
+                    <p:selectOneMenu id="selectCliente" value="#{controleHistorico.objeto.cliente}">
+                        <f:converter converterId="converterCliente"/>
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione umm registro"/>
+                        <f:selectItems value="#{controleHistorico.daoCliente.listaTodos}"
+                                       var="cli" itemLabel="#{cli.nome}"/>
+                    </p:selectOneMenu>
+                                     
+                </p:panelGrid>
+            </h:form>     
+        </ui:define>
+    </ui:composition>
+
+</html>
+
