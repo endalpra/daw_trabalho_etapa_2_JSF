@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Listagem de Seguros</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <p:messages/>
+                <p:growl/>
+                <p:commandButton value="Novo" action="#{controleSeguro.novo()}"
+                                 ajax="false" icon="ui-icon-plus"/>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controleSeguro.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Tipo" itemValue="tipo"/>
+                            <f:selectItem itemLabel="Cliente" itemValue="cliente.nome"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleSeguro.dao.filtro}">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:outputLabel value="Máximo de objetos"/>
+                        <p:inputText value="#{controleSeguro.dao.maximoObjetos}" size="5">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton value="" actionListener="#{controleSeguro.dao.primeiro()}"
+                                         update="listagem" icon="ui-icon-seek-first"/>
+                        <p:commandButton value="" actionListener="#{controleSeguro.dao.anterior()}"
+                                         update="listagem" icon="ui-icon-seek-prev"/>
+                        <p:commandButton value="" actionListener="#{controleSeguro.dao.proximo()}"
+                                         update="listagem" icon="ui-icon-seek-next"/>
+                        <p:commandButton value="" actionListener="#{controleSeguro.dao.ultimo()}"
+                                         update="listagem" icon=" ui-icon-seek-end"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleSeguro.dao.listaObjetos}" var="obj"
+                             id="listagem">
+                    <f:facet name="footer">
+                        <div align="center">
+                            <p:outputLabel value="#{controleSeguro.dao.mensagemNavegacao}"/>
+                        </div>
+                    </f:facet>
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Nome">
+                        <p:outputLabel value="#{obj.tipo}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <p:outputLabel value="#{obj.cliente.nome}"/>
+                    </p:column>
+                    <p:column headerText="Data início">
+                        <p:outputLabel value="#{obj.data_inicio}">
+                         <f:converter converterId="converterCalendar"/>
+                         </p:outputLabel>
+                    </p:column>
+                      <p:column headerText="Quantidade parcelas">
+                        <p:outputLabel value="#{obj.qtd_parcelas}"/>
+                    </p:column>
+                      <p:column headerText="Valor cobertura">
+                        <p:outputLabel value="#{obj.valor_cobertura}"/>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton action="#{controleSeguro.editar(obj.id)}"
+                                             ajax="false" icon="ui-icon-pencil"/>
+                            <p:commandButton action="#{controleSeguro.remover(obj.id)}"
+                                             onclick="if (!confirm('Confirmar a remoção do objeto'))
+                                                     return false"
+                                             update="@form" icon="ui-icon-trash"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>                         
+            </h:form>        
+        </ui:define>
+    </ui:composition>    
+
+</html>
+
