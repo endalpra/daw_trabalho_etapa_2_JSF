@@ -22,6 +22,8 @@
                             <f:selectItem itemLabel="ID" itemValue="id"/>
                             <f:selectItem itemLabel="Conta" itemValue="numero"/>
                             <f:selectItem itemLabel="Cliente" itemValue="cliente"/>
+                            <f:selectItem itemLabel="Data Abertura" itemValue="data_abertura"/>
+                            <f:selectItem itemLabel="Ativa" itemValue="ativa"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="Filtro:"/>
@@ -71,15 +73,15 @@
                     </p:column>
                     <p:column headerText="Data Abertura">
                         <p:outputLabel value="#{obj.data_abertura}">
-                             <f:converter converterId="converterCalendar"/>
+                            <f:converter converterId="converterCalendar"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column headerText="Ativa">
                         <p:outputLabel value="#{obj.ativa}">
-                             <f:converter converterId="converterAtiva"/>
+                            <f:converter converterId="converterAtiva"/>
                         </p:outputLabel>
                     </p:column>   
-                   <p:column headerText="Ações">
+                    <p:column headerText="Ações">
                         <div align="center">
                             <p:commandButton 
                                 actionListener="#{controleContaCorrente.editar(obj.id)}"                                             
@@ -89,7 +91,7 @@
                             <p:commandButton 
                                 actionListener="#{controleContaCorrente.remover(obj.id)}"
                                 onclick="if (!confirm('Confirmar a remoção do objeto'))
-                                                         return false"
+                                            return false"
                                 update="@form"
                                 icon="ui-icon-trash"/>
                         </div>
@@ -133,7 +135,7 @@
                                         <f:selectItems value="#{controleContaCorrente.daoCliente.listaTodos}"
                                                        var="c" itemLabel="#{c.nome}"/>
                                     </p:selectOneMenu>
-                                     <p:outputLabel value="Agencia" for="selectAgencia"/>
+                                    <p:outputLabel value="Agencia" for="selectAgencia"/>
                                     <p:selectOneMenu id="selectAgencia"
                                                      value="#{controleContaCorrente.objeto.agencia}">
                                         <f:converter converterId="converterAgencia"/>
@@ -143,9 +145,7 @@
                                                        var="a" itemLabel="#{a.numero}"/>
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Ativa"/>
-                                    <p:inputText value="#{controleContaCorrente.objeto.ativa}" size="20">
-                                        <f:converter converterId="converterAtiva"/>
-                                    </p:inputText>
+                                    <p:selectBooleanButton id="ativa" value="#{controleContaCorrente.objeto.ativa}" onLabel="Sim" offLabel="Não" style="width:128px" />                                      
                                     <p:outputLabel value="Data Abertura" for="txtDataAbertura"/>
                                     <p:calendar value="#{controleContaCorrente.objeto.data_abertura}" pattern="dd/MM/yyyy"
                                                 id="txtDataAbertura" mask="true" locale="pt_BR">
@@ -154,13 +154,13 @@
                                 </p:panelGrid>
                             </div>
                         </p:tab>
-                       
+
                     </p:tabView>
                 </h:form>
                 <ui:include src="/templates/ajaxstatus.xhtml"/>
             </p:dialog>
-            
-           
+
+
 
         </ui:define>
     </ui:composition>    

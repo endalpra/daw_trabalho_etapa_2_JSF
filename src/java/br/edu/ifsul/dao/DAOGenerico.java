@@ -23,7 +23,7 @@ public class DAOGenerico<T> implements Serializable {
     private EntityManager em;
     private String ordem = "id";
     private String filtro = "";
-    private Integer maximoObjetos = 5;
+    private Integer maximoObjetos = 15;
     private Integer posicaoAtual = 0;
     private Integer totalObjetos = 0;
     
