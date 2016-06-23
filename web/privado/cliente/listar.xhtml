@@ -6,45 +6,44 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Listagem de Clientes</ui:define>
+        <ui:define name="titulo">Listagem de Vendas</ui:define>
         <ui:define name="conteudo">
-            <h:form>
+            <h:form id="formListagem">
                 <p:messages/>
-                <p:growl/>
-                <p:commandButton value="Novo" action="#{controleCliente.novo()}"
-                                 ajax="false" icon="ui-icon-plus"/>
+                <p:growl id="growl"/>
+                <p:commandButton value="Novo" actionListener="#{controleCliente.novo()}"
+                                 icon="ui-icon-plus"
+                                 oncomplete="PF('dlg').show();"
+                                 update=":formEdicao"/>
                 <div align="center">
                     <p:panelGrid columns="11">
-                        <p:outputLabel value="Ordem: "/>
+                        <p:outputLabel value="Ordem:"/>
                         <p:selectOneMenu value="#{controleCliente.dao.ordem}">
                             <f:selectItem itemLabel="ID" itemValue="id"/>
-                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
-                            <f:selectItem itemLabel="Email" itemValue="email"/>
-                            <f:selectItem itemLabel="Endereco" itemValue="endereco"/>
-                            <f:selectItem itemLabel="Cep" itemValue="cep"/>
+                            <f:selectItem itemLabel="Cliente" itemValue="nome"/>
                             <p:ajax update="listagem"/>
                         </p:selectOneMenu>
-                        <p:outputLabel value="Filtro: "/>
+                        <p:outputLabel value="Filtro:"/>
                         <p:inputText value="#{controleCliente.dao.filtro}">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:commandButton value="Filtrar" update="listagem" icon="ui-icon-search"/>
                         <p:outputLabel value="Máximo de objetos"/>
                         <p:inputText value="#{controleCliente.dao.maximoObjetos}" size="5">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton actionListener="#{controleCliente.dao.primeiro()}"
-                                         update="listagem" icon="ui-icon-seek-first"/>
-                        <p:commandButton actionListener="#{controleCliente.dao.anterior()}"
-                                         update="listagem" icon="ui-icon-seek-prev"/>
-                        <p:commandButton actionListener="#{controleCliente.dao.proximo()}"
-                                         update="listagem" icon="ui-icon-seek-next"/>
-                        <p:commandButton actionListener="#{controleCliente.dao.ultimo()}"
-                                         update="listagem" icon="ui-icon-seek-end"/>
+                        <p:commandButton  actionListener="#{controleCliente.dao.primeiro()}"
+                                          update="listagem" icon="ui-icon-seek-first"/>
+                        <p:commandButton  actionListener="#{controleCliente.dao.anterior()}"
+                                          update="listagem" icon="ui-icon-seek-prev"/>                        
+                        <p:commandButton  actionListener="#{controleCliente.dao.proximo()}"
+                                          update="listagem" icon="ui-icon-seek-next"/>                        
+                        <p:commandButton  actionListener="#{controleCliente.dao.ultimo()}"
+                                          update="listagem" icon="ui-icon-seek-end"/>                        
                     </p:panelGrid>
                 </div>
-                <p:dataTable value="#{controleCliente.dao.listaObjetos}" var="obj"
-                             id="listagem">
+                <p:dataTable value="#{controleCliente.dao.listaObjetos}"
+                             var="obj" id="listagem">
                     <f:facet name="footer">
                         <div align="center">
                             <p:outputLabel value="#{controleCliente.dao.mensagemNavegacao}"/>
@@ -54,31 +53,144 @@
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
                     <p:column headerText="Nome">
-                        <p:outputLabel value="#{obj.nome}"/>
-                    </p:column>
+                        <p:outputLabel value="#{obj.nome}">
+                        </p:outputLabel>
+                    </p:column> 
                     <p:column headerText="Email">
-                        <p:outputLabel value="#{obj.email}"/>
-                    </p:column>
-                    <p:column headerText="CEP">
-                        <p:outputLabel value="#{obj.cep}"/>
+                        <p:outputLabel value="#{obj.email}">
+                        </p:outputLabel>
                     </p:column>
                     <p:column headerText="Endereço">
-                        <p:outputLabel value="#{obj.endereco}"/>
-                    </p:column>
+                        <p:outputLabel value="#{obj.endereco}">
+                        </p:outputLabel>
+                    </p:column>                    
+                    <p:column headerText="CEP">
+                        <p:outputLabel value="#{obj.cep}"/>
+                    </p:column>   
                     <p:column headerText="Ações">
                         <div align="center">
-                            <p:commandButton action="#{controleCliente.editar(obj.id)}"
-                                             ajax="false" icon="ui-icon-pencil"/>
-                            <p:commandButton action="#{controleCliente.remover(obj.id)}"
-                                             onclick="if (!confirm('Confirmar a remoção do objeto'))
-                                                     return false"
-                                             update="@form" icon="ui-icon-trash"/>
+                            <p:commandButton 
+                                actionListener="#{controleCliente.editar(obj.id)}"                                             
+                                icon="ui-icon-pencil"
+                                update=":formEdicao"
+                                oncomplete="PF('dlg').show();"/>
+                            <p:commandButton 
+                                actionListener="#{controleCliente.remover(obj.id)}"
+                                onclick="if (!confirm('Confirmar a remoção do objeto'))
+                                                         return false"
+                                update="@form"
+                                icon="ui-icon-trash"/>
                         </div>
                     </p:column>
-                </p:dataTable>                         
-            </h:form>        
+                </p:dataTable>
+            </h:form>            
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição de Cliente" modal="true" resizable="false"
+                      height="400" width="600">
+                <h:form id="formEdicao">
+                    <p:growl/>
+                    <p:tabView id="tab">
+                        <p:tab title="Dados Principais">
+                            <div align="center">
+                                <p:panelGrid columns="2">
+                                    <f:facet name="footer">
+                                        <div align="center">
+                                            <p:commandButton value="Salvar"
+                                                             icon="ui-icon-disk"
+                                                             oncomplete="if(!args.validationFailed)
+                                                             {PF('dlg').hide();}"
+                                                             update=":formListagem :formEdicao"
+                                                             actionListener="#{controleCliente.salvar()}"/>
+                                        </div>
+                                    </f:facet>
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controleCliente.objeto.id}" readonly="true" size="20"/>
+                                    <p:outputLabel value="Nome"/>
+                                    <p:inputText value="#{controleCliente.objeto.nome}" size="20"/>
+                                    <p:outputLabel value="Email"/>
+                                    <p:inputText value="#{controleCliente.objeto.email}" size="20"/>
+                                    <p:outputLabel value="Endereco"/>
+                                    <p:inputText value="#{controleCliente.objeto.endereco}" size="20"/>
+                                    <p:outputLabel value="CEP"/>
+                                    <p:inputText value="#{controleCliente.objeto.cep}" size="20"/>                                                                   
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        <p:tab title="Telefones">
+                            <p:dataTable value="#{controleCliente.objeto.telefones}" var="telefone"
+                                         rowIndexVar="idx" id="listaTelefones">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo Telefone"
+                                                     actionListener="#{controleCliente.novoTelefone()}"
+                                                     update=":formTelefone" icon="ui-icon-plus"
+                                                     id="btnNovoTelefone" process="btnNovoTelefone"
+                                                     oncomplete="PF('dlgTelefone').show();"/>                                                     
+                                </f:facet>
+                                <p:column headerText="Número">
+                                    <p:outputLabel value="#{telefone.telefoneId.numero}"/>
+                                </p:column>
+                                <p:column headerText="Código País">
+                                    <p:outputLabel value="#{telefone.codigo_pais}"/>
+                                </p:column>                                
+                                <p:column headerText="Código Área">
+                                    <p:outputLabel value="#{telefone.codigo_area}"/>
+                                </p:column>
+                                <p:column headerText="Tipo">
+                                    <p:outputLabel value="#{telefone.tipo}"/>
+                                </p:column>
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton id="btnAlterarTelefone"
+                                                         icon="ui-icon-pencil"
+                                                         actionListener="#{controleCliente.alterarTelefone(idx)}"
+                                                         update=":formTelefone" process="btnAlterarTelefone"
+                                                         oncomplete="PF('dlgTelefone').show();"/>
+                                        <p:commandButton id="btnRemoverTelefone"
+                                                         icon="ui-icon-trash"
+                                                         actionListener="#{controleCliente.removerTelefone(idx)}"
+                                                         onclick="if (!confirm('Confirma a remoção'))
+                                                                     return false"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+                <ui:include src="/templates/ajaxstatus.xhtml"/>
+            </p:dialog>
+            <p:dialog widgetVar="dlgTelefone" header="Edição de Telefones"
+                      resizable="false" modal="true">
+                <h:form id="formTelefone">
+                    <p:growl/>
+                    <p:panelGrid columns="2">
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="Salvar telefone"
+                                                 id="btnAdicionarTelefone" 
+                                                 icon="ui-icon-disk"
+                                                 actionListener="#{controleCliente.salvarTelefone()}"
+                                                 update=":formEdicao:tab:listaTelefones :formTelefone"
+                                                 process="@form"
+                                                 oncomplete="if(!args.validationFailed) 
+                                                 {PF('dlgTelefone').hide();}"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="Número"/>
+                        <p:inputText value="#{controleCliente.telefone.telefoneId.numero}">
+                        </p:inputText>
+                        <p:outputLabel value="Código País"/>
+                        <p:inputText value="#{controleCliente.telefone.codigo_pais}"/>
+                        <p:outputLabel value="Código Área"/>
+                        <p:inputText value="#{controleCliente.telefone.codigo_area}"/>
+                        <p:outputLabel value="Tipo"/>
+                        <p:inputText value="#{controleCliente.telefone.tipo}"/>
+
+                    </p:panelGrid>
+                </h:form>
+                <ui:include src="/templates/ajaxstatus.xhtml"/>
+            </p:dialog>
         </ui:define>
     </ui:composition>    
 
 </html>
-

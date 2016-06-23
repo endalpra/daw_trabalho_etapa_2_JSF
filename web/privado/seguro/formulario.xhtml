@@ -32,6 +32,12 @@
                                                 id="txtDataInicio" mask="true" locale="pt_BR">
                                         <f:converter converterId="converterCalendar"/>
                                     </p:calendar> 
+                    <p:outputLabel value="Valor Cobertura" for="txtValor"/>
+                    <p:inputText id="txtValor" value="#{controleSeguro.objeto.valor_cobertura}"
+                                 size="40" maxlength="40"/> 
+                    <p:outputLabel value="Parcelas" for="txtParcelas"/>
+                    <p:inputText id="txtParcelas" value="#{controleSeguro.objeto.qtd_parcelas}"
+                                 size="40" maxlength="40"/> 
                     <p:outputLabel value="Cliente" for="selectCliente"/>
                     <p:selectOneMenu id="selectCliente" value="#{controleSeguro.objeto.cliente}">
                         <f:converter converterId="converterCliente"/>

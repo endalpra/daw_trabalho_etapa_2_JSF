@@ -31,13 +31,13 @@
                         <p:inputText value="#{controleSeguro.dao.maximoObjetos}" size="5">
                             <p:ajax event="keyup" update="listagem"/>
                         </p:inputText>
-                        <p:commandButton value="" actionListener="#{controleSeguro.dao.primeiro()}"
+                        <p:commandButton actionListener="#{controleSeguro.dao.primeiro()}"
                                          update="listagem" icon="ui-icon-seek-first"/>
-                        <p:commandButton value="" actionListener="#{controleSeguro.dao.anterior()}"
+                        <p:commandButton actionListener="#{controleSeguro.dao.anterior()}"
                                          update="listagem" icon="ui-icon-seek-prev"/>
-                        <p:commandButton value="" actionListener="#{controleSeguro.dao.proximo()}"
+                        <p:commandButton actionListener="#{controleSeguro.dao.proximo()}"
                                          update="listagem" icon="ui-icon-seek-next"/>
-                        <p:commandButton value="" actionListener="#{controleSeguro.dao.ultimo()}"
+                        <p:commandButton actionListener="#{controleSeguro.dao.ultimo()}"
                                          update="listagem" icon=" ui-icon-seek-end"/>
                     </p:panelGrid>
                 </div>
@@ -51,7 +51,7 @@
                     <p:column headerText="ID">
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
-                    <p:column headerText="Nome">
+                    <p:column headerText="Tipo">
                         <p:outputLabel value="#{obj.tipo}"/>
                     </p:column>
                     <p:column headerText="Cliente">
